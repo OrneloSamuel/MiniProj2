@@ -16,16 +16,16 @@
       <b-collapse id="nav-collapse" is-nav>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto mr-5">
-          <b-nav-item :to="{ name: 'animals' }" :disabled="isUserLoggedIn"
+          <b-nav-item :to="{ name: 'animals' }" :disabled="!isUserLoggedIn"
             >ANIMAIS</b-nav-item
           >
-          <b-nav-item :to="{ name: 'quizzes' }" :disabled="isUserLoggedIn"
+          <b-nav-item :to="{ name: 'quizzes' }" :disabled="!isUserLoggedIn"
             >QUIZZES</b-nav-item
           >
-          <b-nav-item :to="{ name: 'sponsors' }" :disabled="isUserLoggedIn"
+          <b-nav-item :to="{ name: 'sponsors' }" :disabled="!isUserLoggedIn"
             >PATROCINADORES</b-nav-item
           >
-          <b-nav-item :to="{ name: 'experts' }" :disabled="isUserLoggedIn"
+          <b-nav-item :to="{ name: 'experts' }" :disabled="!isUserLoggedIn"
             >ESPECIALISTAS</b-nav-item
           >
           <b-nav-item to="#contacts">CONTACTOS</b-nav-item>

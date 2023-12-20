@@ -108,7 +108,7 @@ const routes = [
       rule: "user"
     }
   },
-  
+
   {
     path: "/quizzes",
     name: "quizzes",
@@ -183,11 +183,11 @@ const routes = [
     name: "editSponsor",
     component: () => import("@/views/sponsors/EditSponsor.vue")
   },
-  /*{
+  {
     path: "/admin/sponsors/add",
     name: "addSponsor",
     component: () => import("@/views/sponsors/AddSponsor.vue")
-  },*/
+  },
   {
     path: "/admin/experts",
     name: "listExperts",

@@ -1,14 +1,13 @@
 import expertService from "@/api/expert.service";
-import { 
+import {
   // Actions
-  FETCH_EXPERTS, 
-  ADD_EXPERT, 
-  EDIT_EXPERT, 
-  REMOVE_EXPERT, 
+  FETCH_EXPERTS,
+  ADD_EXPERT,
+  EDIT_EXPERT,
+  REMOVE_EXPERT,
   // Mutations
-  SET_EXPERTS, 
-  SET_MESSAGE,
-  UPDATE_LIKES 
+  SET_EXPERTS,
+  SET_MESSAGE
 } from "./expert.constants";
 
 const state = {
@@ -16,63 +15,73 @@ const state = {
 };
 
 const getters = {
-  geExperts: state => state.experts,
-  geExpertsById: state => id => state.experts.find(expert => expert._id === id),
-  getMessage: state => state.message,
-  
+  getExperts: state => state.experts,
+  getExpertsById: state => id =>
+    state.experts.find(expert => expert._id === id),
+  getMessage: state => state.message
 };
 
 const actions = {
   [FETCH_EXPERTS]: ({ commit, rootState }) => {
     return new Promise((resolve, reject) => {
-      expertService.geExperts(rootState.auth.token)
-        .then(
-          res => {
-            commit(SET_EXPERTS, res.body);
-            resolve(res)
-          },
-          err => {
-            commit(SET_MESSAGE, err.message)
-            reject(err)
-          });
-    })
+      expertService.getExperts(rootState.auth.token).then(
+        res => {
+          commit(SET_EXPERTS, res.body);
+          resolve(res);
+        },
+        err => {
+          commit(SET_MESSAGE, err.message);
+          reject(err);
+        }
+      );
+    });
   },
   [ADD_EXPERT]: ({ commit, rootState }, payload) => {
     return new Promise((resolve, reject) => {
-      expertService.addexpert(rootState.auth.token, payload)
-        .then(
-          res => {
-            commit(SET_MESSAGE, `O expert ${res.body.name} foi adicionado com sucesso!`);
-            resolve(res)
-          }, err => {
-            commit(SET_MESSAGE, err.message)
-            reject(err)
-          });
+      expertService.addExpert(rootState.auth.token, payload).then(
+        res => {
+          commit(
+            SET_MESSAGE,
+            `O especialista ${res.body.name} foi adicionado com sucesso!`
+          );
+          resolve(res);
+        },
+        err => {
+          commit(SET_MESSAGE, err.message);
+          reject(err);
+        }
+      );
     });
   },
   [EDIT_EXPERT]: ({ commit, rootState }, payload) => {
     return new Promise((resolve, reject) => {
-      expertService.ediExpert(rootState.auth.token, payload)
-        .then(
-          res => {
-            commit(SET_MESSAGE, `O patrocinador ${res.body.name} foi atualizado com sucesso!`);
-            resolve(res)
-          }, err => {
-            commit(SET_MESSAGE, err)
-            reject(err)
-          });
+      expertService.editExpert(rootState.auth.token, payload).then(
+        res => {
+          commit(
+            SET_MESSAGE,
+            `O especialista ${res.body.name} foi atualizado com sucesso!`
+          );
+          resolve(res);
+        },
+        err => {
+          commit(SET_MESSAGE, err);
+          reject(err);
+        }
+      );
     });
   },
   [REMOVE_EXPERT]: ({ commit, rootState }, id) => {
     return new Promise((resolve, reject) => {
-      expertService.removeexpert(rootState.auth.token, id)
-        .then(res => {
-          commit(SET_MESSAGE, `O patrocinador foi removido com sucesso!`);
-          resolve(res)
-        }, err => {
-          commit(SET_MESSAGE, err.message)
-          reject(err)
-        });
+      expertService.removeExpert(rootState.auth.token, id).then(
+        res => {
+          commit(SET_MESSAGE, `O especialista foi removido com sucesso!`);
+          resolve(res);
+        },
+        err => {
+          commit(SET_MESSAGE, err.message);
+          reject(err);
+        }
+      );
     });
   }
 };
@@ -83,13 +92,6 @@ export const mutations = {
   },
   [SET_MESSAGE]: (state, message) => {
     state.message = message;
-  },
-  [UPDATE_LIKES]: (state, payload) => {
-    state.experts.forEach(expert => {
-      if(expert._id === payload.expertId) {
-        expert.evaluation.push(payload.userId)
-      }
-    });
   }
 };
 
@@ -99,4 +101,4 @@ export default {
   getters,
   actions,
   mutations
-}
+};

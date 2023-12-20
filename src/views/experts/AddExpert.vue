@@ -9,7 +9,13 @@
         <form class="row g-3" @submit.prevent="add">
           <div class="col-md-12">
             <label for="name" class="form-label">Nome do Especialista</label>
-            <input class="form-control" id="name" value="" required />
+            <input
+              v-model="name"
+              class="form-control"
+              id="name"
+              value=""
+              required
+            />
           </div>
           <div class="col-md-12">
             <label for="description" class="form-label">Descrição</label>
@@ -18,6 +24,7 @@
               rows="5"
               id="description"
               required
+              v-model="description"
             ></textarea>
           </div>
           <div class="col-md-4">

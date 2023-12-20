@@ -7,13 +7,17 @@
         <b-col cols="2"></b-col>
         <b-col>
           <router-link
-            :to="{name:'addExpert'}"
+            :to="{ name: 'addExpert' }"
             tag="button"
             class="btn btn-outline-success mr-2 mt-2"
           >
             <i class="fas fa-plus-square"></i> ADICIONAR ESPECIALISTA
           </router-link>
-          <router-link :to="{name:'admin'}" tag="button" class="btn btn-outline-info mr-2 mt-2">
+          <router-link
+            :to="{ name: 'admin' }"
+            tag="button"
+            class="btn btn-outline-info mr-2 mt-2"
+          >
             <i class="fas fa-bars"></i> MENU PRINCIPAL
           </router-link>
         </b-col>
@@ -29,7 +33,11 @@
               <tr>
                 <th scope="col">
                   NOME
-                  <i class="fas fa-arrow-up" v-if="sortType===1" @click="sort()"></i>
+                  <i
+                    class="fas fa-arrow-up"
+                    v-if="sortType === 1"
+                    @click="sort()"
+                  ></i>
                   <i class="fas fa-arrow-down" v-else @click="sort()"></i>
                 </th>
                 <th scope="col">AÇÕES</th>
@@ -37,10 +45,13 @@
             </thead>
             <tbody>
               <tr v-for="expert of experts" :key="expert._id">
-                <td class="pt-4">{{expert.name}}</td>
+                <td class="pt-4">{{ expert.name }}</td>
                 <td>
                   <router-link
-                    :to="{name:'editExpert', params:{expertId: expert._id}}"
+                    :to="{
+                      name: 'editExpert',
+                      params: { expertId: expert._id }
+                    }"
                     tag="button"
                     class="btn btn-outline-success mr-2 mt-2"
                   >

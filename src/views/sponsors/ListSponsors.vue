@@ -7,13 +7,17 @@
         <b-col cols="2"></b-col>
         <b-col>
           <router-link
-            :to="{name:'addExpert'}"
+            :to="{ name: 'addSponsor' }"
             tag="button"
             class="btn btn-outline-success mr-2 mt-2"
           >
             <i class="fas fa-plus-square"></i> ADICIONAR PATROCINADOR
           </router-link>
-          <router-link :to="{name:'admin'}" tag="button" class="btn btn-outline-info mr-2 mt-2">
+          <router-link
+            :to="{ name: 'admin' }"
+            tag="button"
+            class="btn btn-outline-info mr-2 mt-2"
+          >
             <i class="fas fa-bars"></i> MENU PRINCIPAL
           </router-link>
         </b-col>
@@ -29,32 +33,39 @@
               <tr>
                 <th scope="col">
                   NOME DO PATROCINADOR
-                  <i class="fas fa-arrow-up" v-if="sortType===1" @click="sort()"></i>
+                  <i
+                    class="fas fa-arrow-up"
+                    v-if="sortType === 1"
+                    @click="sort()"
+                  ></i>
                   <i class="fas fa-arrow-down" v-else @click="sort()"></i>
                 </th>
                 <th scope="col">AÇÕES</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="expert of experts" :key="expert._id">
-                <td class="pt-4">{{expert.name}}</td>
+              <tr v-for="sponsor of sponsors" :key="sponsor._id">
+                <td class="pt-4">{{ sponsor.name }}</td>
                 <td>
                   <router-link
-                    :to="{name:'editExpert', params:{expertId: expert._id}}"
+                    :to="{
+                      name: 'editSponsor',
+                      params: { sponsorId: sponsor._id }
+                    }"
                     tag="button"
                     class="btn btn-outline-success mr-2 mt-2"
                   >
                     <i class="fas fa-edit"></i> EDITAR
                   </router-link>
                   <button
-                    @click="viewExpert(expert._id)"
+                    @click="viewSponsor(sponsor._id)"
                     type="button"
                     class="btn btn-outline-success mr-2 mt-2"
                   >
                     <i class="fas fa-search"></i> VER
                   </button>
                   <button
-                    @click="removeExpert(expert._id)"
+                    @click="removeSponsor(sponsor._id)"
                     type="button"
                     class="btn btn-outline-danger mr-2 mt-2"
                   >
@@ -72,29 +83,32 @@
 </template>
 
 <script>
-import { FETCH_EXPERTS, REMOVE_EXPERT } from "@/store/experts/expert.constants";
+import {
+  FETCH_SPONSORS,
+  REMOVE_SPONSOR
+} from "@/store/sponsors/sponsor.constants";
 import HeaderPage from "@/components/HeaderPage.vue";
 import { mapGetters } from "vuex";
 
 export default {
-  name: "ManageExperts",
+  name: "ManageSponsors",
   components: {
     HeaderPage
   },
   data: function() {
     return {
-      experts: [],
+      sponsors: [],
       sortType: 1
     };
   },
   computed: {
-    ...mapGetters("expert", ["getExperts", "getMessage"])
+    ...mapGetters("sponsor", ["getSponsors", "getMessage"])
   },
   methods: {
-    fetchExperts() {
-      this.$store.dispatch(`expert/${FETCH_EXPERTS}`).then(
+    fetchSponsors() {
+      this.$store.dispatch(`sponsor/${FETCH_SPONSORS}`).then(
         () => {
-          this.experts = this.getExperts;
+          this.sponsors = this.getSponsors;
         },
         err => {
           this.$alert(`${err.message}`, "Erro", "error");
@@ -102,7 +116,7 @@ export default {
       );
     },
     sort() {
-      this.experts.sort(this.compareNames);
+      this.sponsors.sort(this.compareNames);
       this.sortType *= -1;
     },
     compareNames(u1, u2) {
@@ -111,33 +125,24 @@ export default {
       else return 0;
     },
 
-    viewExpert(id) {
-      const expert = this.experts.find(expert => expert._id === id);
+    viewSponsor(id) {
+      const sponsor = this.sponsors.find(sponsor => sponsor._id === id);
 
       this.$fire({
-        title: expert.name,
-        html: this.generateTemplate(expert),
-        imageUrl: expert.links[0].url,
-        imageWidth: 400,
-        imageHeight: 200,
-        imageAlt: "Imagem desconhecida"
+        title: sponsor.name,
+        html: this.generateTemplate(sponsor)
       });
     },
 
-    generateTemplate(expert) {
+    generateTemplate(sponsor) {
       let response = `
-          <h4>Grupo:</b> ${expert.group}</h4>
-          <h5>(nível:</b> ${expert.level})</h5>
-          <p>${expert.description}</p> 
-          <p>Elementos multimédia:
+          <h6>Descrição</h6> <p>${sponsor.description}<p>
+          <br>
+          <h6>Motivação</h6> <p>${sponsor.motivation}</p> 
         `;
-      for (const link of expert.links) {
-        response += ` <a href='${link.url}' target='_blank'>${link.types}</a>`;
-      }
-      response += `</p><p>Comentários: ${expert.comments.length} Avaliações: ${expert.evaluation.length}</p> `;
       return response;
     },
-    removeExpert(id) {
+    removeSponsor(id) {
       this.$confirm(
         "Se sim, clique em OK",
         "Deseja mesmo remover o patrocinador?",
@@ -145,9 +150,9 @@ export default {
         { confirmButtonText: "OK", cancelButtonText: "Cancelar" }
       ).then(
         () => {
-          this.$store.dispatch(`expert/${REMOVE_EXPERT}`, id).then(() => {
+          this.$store.dispatch(`sponsor/${REMOVE_SPONSOR}`, id).then(() => {
             this.$alert(this.getMessage, "Patrocinador removido!", "success");
-            this.fetchExperts();
+            this.fetchSponsors();
           });
         },
         () => {
@@ -157,7 +162,7 @@ export default {
     }
   },
   created() {
-    this.fetchExperts();
+    this.fetchSponsors();
   }
 };
 </script>

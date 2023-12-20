@@ -1,8 +1,8 @@
 import API_URL from "./config.js";
 
-export const animalService = {
-  async getAnimals(token) {
-    let response = await fetch(`${API_URL}/animals`, {
+export const expertService = {
+  async getExperts(token) {
+    let response = await fetch(`${API_URL}/experts`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -16,8 +16,8 @@ export const animalService = {
     }
   },
 
-  async addAnimal(token, payload) {
-    const response = await fetch(`${API_URL}/animals`, {
+  async addExpert(token, payload) {
+    const response = await fetch(`${API_URL}/experts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,8 +32,8 @@ export const animalService = {
     }
   },
 
-  async editAnimal(token, payload) {
-    const response = await fetch(`${API_URL}/animals/${payload._id}`, {
+  async editExpert(token, payload) {
+    const response = await fetch(`${API_URL}/experts/${payload._id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -48,8 +48,8 @@ export const animalService = {
     }
   },
 
-  async removeAnimal(token, id) {
-    const response = await fetch(`${API_URL}/animals/${id}`, {
+  async removeExpert(token, id) {
+    const response = await fetch(`${API_URL}/experts/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -77,4 +77,4 @@ function handleResponses(code) {
   return message;
 }
 
-export default animalService;
+export default expertService;
