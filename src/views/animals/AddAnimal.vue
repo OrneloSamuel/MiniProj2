@@ -142,7 +142,7 @@ export default {
           this.$alert(this.getMessage, "Animal adicionado!", "success");
           router.push({ name: "listAnimals" });
         },
-        (err) => {
+        err => {
           this.$alert(`${err.message}`, "Erro", "error");
         }
       );

@@ -57,10 +57,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       expertService.editExpert(rootState.auth.token, payload).then(
         res => {
-          commit(
-            SET_MESSAGE,
-            `O especialista ${res.body.name} foi atualizado com sucesso!`
-          );
+          commit(SET_MESSAGE, `O especialista foi atualizado com sucesso!`);
           resolve(res);
         },
         err => {

@@ -2,7 +2,13 @@
   <section class="page-section">
     <b-container>
       <HeaderPage title="Patrocinadores" />
-      <Sponsor />
+      <b-row align-h="center" cols="1" cols-sm="1" cols-md="3">
+        <Sponsor
+          v-for="sponsor in sponsors"
+          :key="sponsor.id"
+          :sponsor="sponsor"
+        />
+      </b-row>
     </b-container>
   </section>
 </template>
@@ -23,48 +29,30 @@ export default {
   data: function() {
     return {
       reverse: false,
-      sponsors: [],
-      userLevel:0
+      sponsors: []
     };
   },
   computed: {
-    ...mapGetters(["getUserLevelByPoints"]),
-    ...mapGetters('auth', ["getProfile"]),
-    ...mapGetters("sponsor", ["geSponsors","getMessage"]),
-    classSorter() {
-      return {
-        "fas fa-sort-alpha-up": !this.reverse,
-        "fas fa-sort-alpha-down": this.reverse
-      };
-    }
+    ...mapGetters("sponsor", ["getSponsors"])
   },
   methods: {
-    compareSponsorNames(sponsor1, sponsor2) {
-      if (!this.reverse) {
-        if (sponsor1.name > sponsor2.name) return 1;
-        if (sponsor1.name < sponsor2.name) return -1;
-      } else {
-        if (sponsor1.name < sponsor2.name) return 1;
-        if (sponsor1.name > sponsor2.name) return -1;
-      }
-      return 0;
-    },
-    sorSponsors() {
-      this.sponsors.sort(this.comparesponsorNames);
-      this.reverse = !this.reverse;
-    }
-  },
-  created() {
-    this.$store
-      .dispatch(`sponsor/${FETCH_SPONSORS}`)
-      .then(
+    fetchSponsors() {
+      this.$store.dispatch(`sponsor/${FETCH_SPONSORS}`).then(
         () => {
-          this.sponsors = this.geSponsors.filter(
-            sponsor => sponsor.level <= this.getUserLevelByPoints(this.getProfile.gamification.points).level
-          )
+          this.sponsors = this.getSponsors;
+          this.sponsors.sort(this.compareLevels);
         },
         err => this.$alert(`${err.message}`, "Erro", "error")
       );
+    },
+    compareLevels(sponsor1, sponsor2) {
+      if (sponsor1.name > sponsor2.name) return 1;
+      if (sponsor1.name < sponsor2.name) return -1;
+      else return 0;
+    }
+  },
+  created() {
+    this.fetchSponsors();
   }
 };
 </script>

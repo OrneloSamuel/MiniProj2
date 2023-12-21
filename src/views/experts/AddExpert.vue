@@ -7,114 +7,144 @@
       <!--FORM-->
       <b-row>
         <form class="row g-3" @submit.prevent="add">
-          <div class="col-md-12">
-            <label for="name" class="form-label">Nome do Especialista</label>
+          <div class="col-md-12 form-group">
             <input
               v-model="name"
               class="form-control"
               id="name"
-              value=""
+              placeholder="Digite o nome do especialista"
               required
             />
           </div>
-          <div class="col-md-12">
-            <label for="description" class="form-label">Descrição</label>
+          <div class="col-md-12 form-group">
             <textarea
               class="form-control"
               rows="5"
               id="description"
               required
               v-model="description"
+              placeholder="Digite a descrição do especialista"
             ></textarea>
           </div>
-          <div class="col-md-4">
-            <label for="photo-1" class="form-label">Foto 1</label>
+          <div class="col-md-4 form-group">
             <input
-              type="file"
-              accept="image/*"
               class="form-control"
-              rows="5"
               id="photo-1"
+              placeholder="Insira o link da foto"
+              v-model="photo_one"
             />
           </div>
-          <div class="col-md-4">
-            <label for="photo-2" class="form-label">Foto 2</label>
+          <div class="col-md-4 form-group">
             <input
-              type="file"
-              accept="image/*"
               class="form-control"
-              rows="5"
               id="photo-2"
+              placeholder="Insira o link da foto"
+              v-model="photo_two"
             />
           </div>
-          <div class="col-md-4">
-            <label for="photo-3" class="form-label">Foto 3</label>
+          <div class="col-md-4 form-group">
             <input
-              type="file"
-              accept="image/*"
               class="form-control"
-              rows="5"
               id="photo-3"
+              placeholder="Insira o link da foto"
+              v-model="photo_three"
             />
           </div>
-          <div class="col-md-6">
-            <label for="facebook" class="form-label">Link Facebook</label>
-            <input class="form-control" id="facebook" />
-          </div>
-          <div class="col-md-6">
-            <label for="instagram" class="form-label">Link Instagram</label>
-            <input class="form-control" id="instagram" />
-          </div>
-          <div class="col-md-6">
-            <label for="twitter" class="form-label">Link Twitter</label>
-            <input class="form-control" id="twitter" />
-          </div>
-          <div class="col-md-6">
-            <label for="linkedin" class="form-label">Link Linkedin</label>
-            <input type="text" class="form-control" id="linkedin" />
-          </div>
-          <div class="col-md-4">
-            <label for="linkedin" class="form-label">Adicionar Animais</label>
+          <div class="col-md-6 form-group">
             <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Digite o nome do animal"
-              aria-label="Search"
+              class="form-control"
+              id="facebook"
+              placeholder="Insira o link do facebook"
+              v-model="facebook"
             />
           </div>
-          <div class="col-md-6 gy-5">
+          <div class="col-md-6 form-group">
             <input
-              class="form-control me-2"
-              id="description-animal"
-              placeholder="Digite a relação com o animal"
+              class="form-control"
+              id="instagram"
+              placeholder="Insira o link do instagram"
+              v-model="instagram"
             />
           </div>
-          <div class="col-md-2 gy-5">
-            <button class="btn btn-outline-secondary" type="button">
-              <span class="fa fa-plus-square"></span> Adicionar Animal
-            </button>
+          <div class="col-md-6 form-group">
+            <input
+              class="form-control"
+              id="twitter"
+              placeholder="Insira o link do twitter"
+              v-model="twitter"
+            />
           </div>
-          <table class="table table-striped">
-            <thead class="table-dark">
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Animal</th>
-                <th scope="col">Relação</th>
-              </tr>
-            </thead>
-          </table>
+          <div class="col-md-6 form-group">
+            <input
+              class="form-control"
+              id="linkedin"
+              placeholder="Insira o link do twitter"
+              v-model="linkedin"
+            />
+          </div>
+          <div class="col-md-12 form-group">
+            <div class="row" v-if="animals.length">
+              <div class="col-md-12">
+                <h4>Lista de animais</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div v-for="(animal, index) in animals" :key="animal.id">
+              <div class="row">
+                <div class="col-md-4 form-group">
+                  <select
+                    v-model="animal.animal"
+                    :key="index"
+                    class="form-control"
+                    required
+                  >
+                    <option
+                      v-for="a in myAnimals"
+                      :key="a._id"
+                      :value="a._id"
+                      >{{ a.name }}</option
+                    >
+                  </select>
+                </div>
+                <div class="col-md-6 gy-5 form-group">
+                  <input
+                    class="form-control me-2"
+                    id="description-animal"
+                    placeholder="Digite a relação com o animal"
+                    :key="index"
+                    v-model="animal.description"
+                  />
+                </div>
+                <div class="col-md-2 form-group">
+                  <button
+                    @click="removeAnimal(index)"
+                    type="button"
+                    class="btn btn-outline-danger mr-2"
+                  >
+                    <i class="fas fa-trash"></i> REMOVER
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="col-12">
-            <button class="btn btn-outline-primary" type="submit">
+            <button
+              @click="addAnimal"
+              type="button"
+              class="btn btn-outline-success mr-2"
+            >
+              <i class="fas fa-plus-square"></i> ADICIONAR ANIMAL
+            </button>
+            <button class="btn btn-outline-success mr-2" type="submit">
               <span class="fa fa-save"></span> SALVAR
             </button>
             <router-link
               :to="{ name: 'listExperts' }"
-              tag="b-button"
-              variant="outline-success"
-              align="center"
+              tag="button"
               class="btn btn-outline-danger"
             >
-              <i class="fas fa-arrow-circle-left"></i> CANCELAR
+              <i class="fas fa-window-close"></i> CANCELAR
             </router-link>
           </div>
         </form>
@@ -125,6 +155,7 @@
 
 <script>
 import { ADD_EXPERT } from "@/store/experts/expert.constants";
+import { FETCH_ANIMALS } from "@/store/animals/animal.constants";
 import HeaderPage from "@/components/HeaderPage.vue";
 import router from "@/router";
 import { mapGetters } from "vuex";
@@ -132,38 +163,56 @@ import { mapGetters } from "vuex";
 export default {
   name: "AddExpert",
   components: {
-    HeaderPage,
+    HeaderPage
   },
   data: () => {
     return {
       name: "",
-      group: "",
       description: "",
-      level: "",
-      links: [
-        { types: "photo", url: "" },
-        { types: "video", url: "" },
-        { types: "sound", url: "" },
-      ],
-      evaluation: [],
-      comments: [],
+      photo_one: "",
+      photo_two: "",
+      photo_three: "",
+      facebook: "",
+      instagram: "",
+      twitter: "",
+      linkedin: "",
+      animals: [],
+      myAnimals: [],
+      active: true
     };
   },
   computed: {
     ...mapGetters("expert", ["getMessage"]),
+    ...mapGetters("animal", ["getAnimals", "getMessage"])
   },
   methods: {
+    addAnimal() {
+      this.animals.push({ animal: "", description: "" });
+    },
+    removeAnimal(index) {
+      this.animals.splice(index, 1);
+    },
     add() {
       this.$store.dispatch(`expert/${ADD_EXPERT}`, this.$data).then(
         () => {
           this.$alert(this.getMessage, "Especialista adicionado!", "success");
           router.push({ name: "listExperts" });
         },
-        (err) => {
+        err => {
           this.$alert(`${err.message}`, "Erro", "error");
         }
       );
-    },
+    }
   },
+  created() {
+    this.$store.dispatch(`animal/${FETCH_ANIMALS}`).then(
+      () => {
+        this.myAnimals = this.getAnimals;
+      },
+      err => {
+        this.$alert(`${err.message}`, "Erro", "error");
+      }
+    );
+  }
 };
 </script>

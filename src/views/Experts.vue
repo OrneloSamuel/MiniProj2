@@ -2,7 +2,9 @@
   <section class="page-section">
     <b-container>
       <HeaderPage title="Especialistas" />
-      <Expert />
+      <b-row align-h="center" cols="1" cols-sm="1" cols-md="3">
+        <Expert v-for="expert in experts" :key="expert.id" :expert="expert" />
+      </b-row>
     </b-container>
   </section>
 </template>
@@ -23,48 +25,30 @@ export default {
   data: function() {
     return {
       reverse: false,
-      Experts: [],
-      userLevel:0
+      experts: []
     };
   },
   computed: {
-    ...mapGetters(["getUserLevelByPoints"]),
-    ...mapGetters('auth', ["getProfile"]),
-    ...mapGetters("Expert", ["getExperts","getMessage"]),
-    classSorter() {
-      return {
-        "fas fa-sort-alpha-up": !this.reverse,
-        "fas fa-sort-alpha-down": this.reverse
-      };
-    }
+    ...mapGetters("expert", ["getExperts"])
   },
   methods: {
-    compareExpertNames(Expert1, Expert2) {
-      if (!this.reverse) {
-        if (Expert1.name > Expert2.name) return 1;
-        if (Expert1.name < Expert2.name) return -1;
-      } else {
-        if (Expert1.name < Expert2.name) return 1;
-        if (Expert1.name > Expert2.name) return -1;
-      }
-      return 0;
-    },
-    sortExperts() {
-      this.Experts.sort(this.compareExpertNames);
-      this.reverse = !this.reverse;
-    }
-  },
-  created() {
-    this.$store
-      .dispatch(`Expert/${FETCH_EXPERTS}`)
-      .then(
+    fetchExperts() {
+      this.$store.dispatch(`expert/${FETCH_EXPERTS}`).then(
         () => {
-          this.Experts = this.getExperts.filter(
-            Expert => Expert.level <= this.getUserLevelByPoints(this.getProfile.gamification.points).level
-          )
+          this.experts = this.getExperts;
+          this.experts.sort(this.compareLevels);
         },
         err => this.$alert(`${err.message}`, "Erro", "error")
       );
+    },
+    compareLevels(expert1, expert2) {
+      if (expert1.name > expert2.name) return 1;
+      if (expert1.name < expert2.name) return -1;
+      else return 0;
+    }
+  },
+  created() {
+    this.fetchExperts();
   }
 };
 </script>

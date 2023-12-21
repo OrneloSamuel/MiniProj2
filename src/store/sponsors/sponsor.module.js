@@ -57,10 +57,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       sponsorService.editSponsor(rootState.auth.token, payload).then(
         res => {
-          commit(
-            SET_MESSAGE,
-            `O patrocinador ${res.body.name} foi atualizado com sucesso!`
-          );
+          commit(SET_MESSAGE, `O patrocinador foi atualizado com sucesso!`);
           resolve(res);
         },
         err => {

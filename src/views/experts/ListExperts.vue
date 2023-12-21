@@ -127,25 +127,14 @@ export default {
 
       this.$fire({
         title: expert.name,
-        html: this.generateTemplate(expert),
-        imageUrl: expert.links[0].url,
-        imageWidth: 400,
-        imageHeight: 200,
-        imageAlt: "Imagem desconhecida"
+        html: this.generateTemplate(expert)
       });
     },
 
     generateTemplate(expert) {
       let response = `
-          <h4>Grupo:</b> ${expert.group}</h4>
-          <h5>(nível:</b> ${expert.level})</h5>
-          <p>${expert.description}</p> 
-          <p>Elementos multimédia:
+          <h6>Descrição</h6> <p>${expert.description}<p>
         `;
-      for (const link of expert.links) {
-        response += ` <a href='${link.url}' target='_blank'>${link.types}</a>`;
-      }
-      response += `</p><p>Comentários: ${expert.comments.length} Avaliações: ${expert.evaluation.length}</p> `;
       return response;
     },
     removeExpert(id) {
